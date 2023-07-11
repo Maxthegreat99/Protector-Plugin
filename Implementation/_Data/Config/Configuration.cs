@@ -119,6 +119,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
     }
 
     public Configuration() {
+      
       this.ManuallyProtectableTiles = new bool[TerrariaUtils.BlockType_Max + 50];
       this.AutoProtectedTiles = new bool[TerrariaUtils.BlockType_Max + 50];
       this.NotDeprotectableTiles = new bool[TerrariaUtils.BlockType_Max + 50];

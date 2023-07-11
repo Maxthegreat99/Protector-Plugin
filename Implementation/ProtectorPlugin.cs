@@ -14,6 +14,9 @@ using TShockAPI;
 
 using Terraria.Plugins.Common;
 using Terraria.Plugins.Common.Hooks;
+using System.Xml;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace Terraria.Plugins.CoderCow.Protector {
   [ApiVersion(2, 1)]
@@ -66,7 +69,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
     public ProtectorPlugin(Main game): base(game) {
       this.PluginInfo = new PluginInfo(
         "Protector",
-        Assembly.GetAssembly(typeof(ProtectorPlugin)).GetName().Version,
+        new Version(1,9,1,2),
         "",
         "CoderCow",
         "Protects single blocks and objects from being changed."
@@ -116,6 +119,16 @@ namespace Terraria.Plugins.CoderCow.Protector {
     }
 
     private bool InitConfig() {
+      if (!File.Exists(ProtectorPlugin.ConfigFilePath))
+      {
+        var assembly = Assembly.GetExecutingAssembly();
+        string resourceNamexml = assembly.GetManifestResourceNames().Single(str => str.EndsWith("Config.xml"));
+        XDocument xdoc = XDocument.Load(this.GetType().Assembly.GetManifestResourceStream(resourceNamexml));
+        xdoc.Save(DataDirectory + "/Config.xml");
+        string resourceNamexsd = assembly.GetManifestResourceNames().Single(str => str.EndsWith("Config.xsd"));
+        XDocument xsddoc = XDocument.Load(this.GetType().Assembly.GetManifestResourceStream(resourceNamexsd));
+        xsddoc.Save(DataDirectory + "/Config.xsd");
+      }
       if (File.Exists(ProtectorPlugin.ConfigFilePath)) {
         try {
           this.Config = Configuration.Read(ProtectorPlugin.ConfigFilePath);

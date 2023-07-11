@@ -3,9 +3,9 @@ using System.Data;
 using System.IO;
 using DPoint = System.Drawing.Point;
 
-using Mono.Data.Sqlite;
+using Microsoft.Data.Sqlite;
 using MySql.Data.MySqlClient;
-using OTAPI.Tile;
+using Terraria;
 using Terraria.ID;
 using Terraria.Plugins.Common;
 
@@ -75,7 +75,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
             if (!File.Exists(sqliteDatabaseFilePath))
               throw new FileNotFoundException("Sqlite database file not found.", sqliteDatabaseFilePath);
 
-            dbConnection = new SqliteConnection($"uri=file://{sqliteDatabaseFilePath},Version=3");
+            dbConnection = new SqliteConnection(string.Format("Data Source={0}", sqliteDatabaseFilePath));
 
             break;
           default:

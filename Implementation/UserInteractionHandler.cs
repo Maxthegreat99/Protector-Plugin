@@ -8,7 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.Xna.Framework;
-using OTAPI.Tile;
+using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using DPoint = System.Drawing.Point;
@@ -460,7 +460,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
 
             if (!isInvalidEntry) {
               WorldGen.KillTile(chestLocation.X, chestLocation.Y, false, false, true);
-              TSPlayer.All.SendTileSquare(chestLocation, 4);
+              TSPlayer.All.SendTileSquareCentered(chestLocation, 4);
               cleanedUpChestsCount++;
             } else {
               cleanedUpInvalidChestDataCount++;
@@ -739,12 +739,12 @@ namespace Terraria.Plugins.CoderCow.Protector {
         ) {
           this.TryCreateProtection(playerLocal, location);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         } else if (editType == TileEditType.DestroyWall) {
           playerLocal.SendErrorMessage("Walls can not be protected.");
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
@@ -752,7 +752,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
       };
       Func<TSPlayer,DPoint,CommandInteractionResult> usageCallbackFunc = (playerLocal, location) => {
         this.TryCreateProtection(playerLocal, location);
-        playerLocal.SendTileSquare(location, 3);
+        playerLocal.SendTileSquareCentered(location, 3);
 
         return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
       };
@@ -820,16 +820,16 @@ namespace Terraria.Plugins.CoderCow.Protector {
         ) {
           this.TryRemoveProtection(playerLocal, location);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
-        playerLocal.SendTileSquare(location);
+        playerLocal.SendTileSquareCentered(location);
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
       Func<TSPlayer,DPoint,CommandInteractionResult> usageCallbackFunc = (playerLocal, location) => {
         this.TryRemoveProtection(playerLocal, location);
-        playerLocal.SendTileSquare(location, 3);
+        playerLocal.SendTileSquareCentered(location, 3);
 
         return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
       };
@@ -902,16 +902,16 @@ namespace Terraria.Plugins.CoderCow.Protector {
         ) {
           this.TryGetProtectionInfo(playerLocal, location);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
-        playerLocal.SendTileSquare(location);
+        playerLocal.SendTileSquareCentered(location);
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
       Func<TSPlayer,DPoint,CommandInteractionResult> usageCallbackFunc = (playerLocal, location) => {
         this.TryGetProtectionInfo(playerLocal, location);
-        playerLocal.SendTileSquare(location, 3);
+        playerLocal.SendTileSquareCentered(location, 3);
 
         return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
       };
@@ -1268,16 +1268,16 @@ namespace Terraria.Plugins.CoderCow.Protector {
         ) {
           this.TryAlterProtectionShare(playerLocal, location, isShareOrUnshare, isGroup, isShareAll, shareTarget, shareTargetName);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
-        playerLocal.SendTileSquare(location);
+        playerLocal.SendTileSquareCentered(location);
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
       Func<TSPlayer,DPoint,CommandInteractionResult> usageCallbackFunc = (playerLocal, location) => {
         this.TryAlterProtectionShare(playerLocal, location, isShareOrUnshare, isGroup, isShareAll, shareTarget, shareTargetName);
-        playerLocal.SendTileSquare(location, 3);
+        playerLocal.SendTileSquareCentered(location, 3);
 
         return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
       };
@@ -1330,16 +1330,16 @@ namespace Terraria.Plugins.CoderCow.Protector {
         ) {
           this.TryLockChest(playerLocal, location);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
-        playerLocal.SendTileSquare(location);
+        playerLocal.SendTileSquareCentered(location);
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
       interaction.ChestOpenCallback += (playerLocal, location) => {
         this.TryLockChest(playerLocal, location);
-        playerLocal.SendTileSquare(location, 3);
+        playerLocal.SendTileSquareCentered(location, 3);
 
         return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
       };
@@ -1404,17 +1404,17 @@ namespace Terraria.Plugins.CoderCow.Protector {
           IChest newChest;
           this.TrySwapChestData(playerLocal, location, out newChest);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
-        playerLocal.SendTileSquare(location);
+        playerLocal.SendTileSquareCentered(location);
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
       interaction.ChestOpenCallback += (playerLocal, location) => {
         IChest newChest;
         this.TrySwapChestData(playerLocal, location, out newChest);
-        playerLocal.SendTileSquare(location, 3);
+        playerLocal.SendTileSquareCentered(location, 3);
 
         return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
       };
@@ -1523,11 +1523,11 @@ namespace Terraria.Plugins.CoderCow.Protector {
         ) {
           this.TrySetUpRefillChest(playerLocal, location, refillTime, oneLootPerPlayer, lootLimit, autoLock, autoEmpty);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
-        playerLocal.SendTileSquare(location);
+        playerLocal.SendTileSquareCentered(location);
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
       interaction.ChestOpenCallback += (playerLocal, location) => {
@@ -1807,10 +1807,10 @@ namespace Terraria.Plugins.CoderCow.Protector {
         ) {
           this.TrySetUpBankChest(playerLocal, location, chestIndex);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         } else if (editType == TileEditType.DestroyWall) {
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
         }
 
@@ -1914,12 +1914,12 @@ namespace Terraria.Plugins.CoderCow.Protector {
           editType != TileEditType.PlaceActuator
         ) {
           dumpBankChest(playerLocal, location);
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
 
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
-        playerLocal.SendTileSquare(location);
+        playerLocal.SendTileSquareCentered(location);
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
       interaction.ChestOpenCallback += (playerLocal, chestLocation) => {
@@ -2035,11 +2035,11 @@ namespace Terraria.Plugins.CoderCow.Protector {
         ) {
           this.TrySetUpTradeChest(playerLocal, location, sellAmount, sellItem.netID, payAmount, payItemIdOrGroup, lootLimit);
 
-          playerLocal.SendTileSquare(location);
+          playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
         }
 
-        playerLocal.SendTileSquare(location);
+        playerLocal.SendTileSquareCentered(location);
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
       interaction.ChestOpenCallback += (playerLocal, location) => {
@@ -2328,7 +2328,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
               if (protection.TradeChestData != null)
                 player.SendWarningMessage("If you want to trade with this chest, right click it first.");
 
-              player.SendTileSquare(location);
+              player.SendTileSquareCentered(location);
               return true;
             }
           }
@@ -2366,7 +2366,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
             break;
 
           if (this.CheckProtected(player, location, false)) {
-            player.SendTileSquare(location);
+            player.SendTileSquareCentered(location);
             return true;
           }
 
@@ -2374,7 +2374,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
         case TileEditType.PokeLogicGate:
         case TileEditType.Actuate:
           if (this.CheckProtected(player, location, false)) {
-            player.SendTileSquare(location);
+            player.SendTileSquareCentered(location);
             return true;
           }
 
@@ -2390,7 +2390,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
       
       int directionInt = direction ? 1 : -1;
       WorldGen.PlaceObject(location.X, location.Y, blockType, false, objectStyle, alternative, random, directionInt);
-      NetMessage.SendObjectPlacment(player.Index, location.X, location.Y, blockType, objectStyle, alternative, random, directionInt);
+      NetMessage.SendObjectPlacement(player.Index, location.X, location.Y, blockType, objectStyle, alternative, random, directionInt);
 
       if (this.Config.AutoProtectedTiles[blockType])
         this.TryCreateAutoProtection(player, location);
@@ -2410,8 +2410,8 @@ namespace Terraria.Plugins.CoderCow.Protector {
 
       try {
         this.ChestManager.PlaceChest(tileToPlace, storageStyle, location);
-      } catch (LimitEnforcementException ex) {
-        player.SendTileSquare(location.X, location.Y, 2);
+      } catch (LimitEnforcementException) {
+        player.SendTileSquareCentered(location.X, location.Y, 2);
         player.SendErrorMessage("The limit of maximum possible chests has been reached. Please report this to a server administrator.");
         this.PluginTrace.WriteLineWarning($"Chest limit of {Main.chest.Length + this.Config.MaxProtectorChests - 1} has been reached!");
       }
@@ -2786,7 +2786,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
           complete = true;
         }
 
-        playerLocal.SendTileSquare(chest.Location);
+        playerLocal.SendTileSquareCentered(chest.Location);
         return new CommandInteractionResult {IsHandled = true, IsInteractionCompleted = complete};
       };
     }
@@ -2936,12 +2936,12 @@ namespace Terraria.Plugins.CoderCow.Protector {
         if (style != ChestStyle.ShadowChest) {
           int keyType = TerrariaUtils.Tiles.KeyItemTypeFromChestStyle(style);
           if (keyType != 0) {
-            int itemIndex = Item.NewItem(chestLocation.X * TerrariaUtils.TileSize, chestLocation.Y * TerrariaUtils.TileSize, 0, 0, keyType);
+            int itemIndex = Item.NewItem(null,chestLocation.X * TerrariaUtils.TileSize, chestLocation.Y * TerrariaUtils.TileSize, 0, 0, keyType);
             player.SendData(PacketTypes.ItemDrop, string.Empty, itemIndex);
           }
         }
 
-        player.SendTileSquare(chestLocation, 3);
+        player.SendTileSquareCentered(chestLocation, 3);
         return true;
       }
 
@@ -2964,7 +2964,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
         return true;
       
       if (this.CheckProtected(player, location, false)) {
-        player.SendTileSquare(location, 3);
+        player.SendTileSquareCentered(location, 3);
         return true;
       }
 
@@ -2975,7 +2975,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
       if (this.IsDisposed)
         return false;
       if (this.CheckProtected(player, location, false)) {
-        player.SendTileSquare(location, 5);
+        player.SendTileSquareCentered(location, 5);
         return true;
       }
 
@@ -3282,7 +3282,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
         }
 
         return false;
-      } catch (InvalidBlockTypeException ex) {
+      } catch (InvalidBlockTypeException) {
         if (sendFailureMessages)
           player.SendErrorMessage("Objects of this type can not be shared with others.");
 
@@ -3571,7 +3571,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
 
           // Tell the client to remove the chest with the given index from its own chest array.
           TSPlayer.All.SendData(PacketTypes.PlaceChest, string.Empty, 1, chestLocation.X, chestLocation.Y, 0, chest.Index);
-          TSPlayer.All.SendTileSquare(chestLocation.X, chestLocation.Y, 2);
+          TSPlayer.All.SendTileSquareCentered(chestLocation.X, chestLocation.Y, 2);
           player?.SendWarningMessage("This chest is now a Protector chest.");
         }
       } else {
@@ -3852,7 +3852,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
 
         player.SendSuccessMessage("Trade chest was successfully created / updated.");
         return true;
-      } catch (ArgumentOutOfRangeException ex) {
+      } catch (ArgumentOutOfRangeException) {
         if (sendMessages)
           player.SendErrorMessage("Invalid item amount given.");
 

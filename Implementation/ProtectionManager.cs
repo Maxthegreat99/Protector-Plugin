@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using OTAPI.Tile;
+using Terraria;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ObjectData;
@@ -327,9 +327,9 @@ namespace Terraria.Plugins.CoderCow.Protector {
       ProtectionEntry protection;
       try {
         this.ProtectionSharePreValidation(player, tileLocation, shareOrUnshare, checkPermissions, out protection);
-      } catch (Exception ex) {
+      } catch (Exception) {
         // Excludes the internal method from the callstack.
-        throw ex;
+        throw;
       }
 
       if (protection.IsSharedWithEveryone == shareOrUnshare) {
@@ -352,9 +352,9 @@ namespace Terraria.Plugins.CoderCow.Protector {
       ProtectionEntry protection;
       try {
         this.ProtectionSharePreValidation(player, tileLocation, shareOrUnshare, checkPermissions, out protection);
-      } catch (Exception ex) {
+      } catch (Exception) {
         // Excludes the internal method from the callstack.
-        throw ex;
+        throw;
       }
 
       UserAccount user = TShock.UserAccounts.GetUserAccountByID(targetUserId);
@@ -390,9 +390,9 @@ namespace Terraria.Plugins.CoderCow.Protector {
       ProtectionEntry protection;
       try {
         this.ProtectionSharePreValidation(player, tileLocation, shareOrUnshare, checkPermissions, out protection);
-      } catch (Exception ex) {
+      } catch (Exception) {
         // Excludes the internal method from the callstack.
-        throw ex;
+        throw;
       }
 
       if (!TShock.Groups.GroupExists(targetGroupName))

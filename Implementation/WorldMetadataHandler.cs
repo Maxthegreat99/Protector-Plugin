@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using OTAPI.Tile;
+using Terraria;
 using DPoint = System.Drawing.Point;
 
 using Terraria.Plugins.Common;
