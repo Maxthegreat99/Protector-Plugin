@@ -214,8 +214,8 @@
     <PackageReference Include="TShock" Version="5.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Plugin Common Lib 4.2.1">
-      <HintPath>..\PluginCommonLibrary\obj\x64\Release\net6.0\Plugin Common Lib 4.2.1.dll</HintPath>
+    <Reference Include="Plugin Common Lib 4.2.0">
+      <HintPath>..\PluginCommonLibrary\obj\x64\Release\net6.0\Plugin Common Lib 4.2.0.dll</HintPath>
     </Reference>
     <Reference Include="Wolfje.Plugins.SEconomy">
       <HintPath>..\SEconomy\SEconomyPlugin\obj\x64\Release\net6.0-windows\Wolfje.Plugins.SEconomy.dll</HintPath>
