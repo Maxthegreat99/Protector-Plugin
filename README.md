@@ -100,6 +100,8 @@ To get more information about a command type `/<command> help` ingame.
 * **prot.cfg**
   Can import Infinite Chests' data or Infinite Signs' database files, can 
   reload Protector's configuration file.
+* **prot.regionsonlyprotections**
+  Can only create protections in regions with build permissions.
 
 ### Data Import and Compatibility
 
