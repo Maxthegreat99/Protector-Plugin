@@ -70,7 +70,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
     public ProtectorPlugin(Main game): base(game) {
       this.PluginInfo = new PluginInfo(
         "Protector",
-        new Version(1,9,1,2),
+        new Version(1,9,1,3),
         "",
         "CoderCow",
         "Protects single blocks and objects from being changed."
