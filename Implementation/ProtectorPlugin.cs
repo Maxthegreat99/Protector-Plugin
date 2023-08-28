@@ -43,6 +43,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
     public const string ScanChests_Permission           = "prot.scanchests";
     public const string Utility_Permission              = "prot.utility";
     public const string Cfg_Permission                  = "prot.cfg";
+    public const string RestrictProtections_Permission  = "prot.regionsonlyprotections";
 
     public static string DataDirectory => Path.Combine(TShock.SavePath, "Protector");
     public static string ConfigFilePath => Path.Combine(ProtectorPlugin.DataDirectory, "Config.xml");
@@ -119,16 +120,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
     }
 
     private bool InitConfig() {
-      if (!File.Exists(ProtectorPlugin.ConfigFilePath))
-      {
-        var assembly = Assembly.GetExecutingAssembly();
-        string resourceNamexml = assembly.GetManifestResourceNames().Single(str => str.EndsWith("Config.xml"));
-        XDocument xdoc = XDocument.Load(this.GetType().Assembly.GetManifestResourceStream(resourceNamexml));
-        xdoc.Save(DataDirectory + "/Config.xml");
-        string resourceNamexsd = assembly.GetManifestResourceNames().Single(str => str.EndsWith("Config.xsd"));
-        XDocument xsddoc = XDocument.Load(this.GetType().Assembly.GetManifestResourceStream(resourceNamexsd));
-        xsddoc.Save(DataDirectory + "/Config.xsd");
-      }
+
       if (File.Exists(ProtectorPlugin.ConfigFilePath)) {
         try {
           this.Config = Configuration.Read(ProtectorPlugin.ConfigFilePath);
@@ -142,8 +134,15 @@ namespace Terraria.Plugins.CoderCow.Protector {
           return false;
         }
       } else {
-        this.Config = new Configuration();
-      }
+        var assembly = Assembly.GetExecutingAssembly();
+        string resourceNamexml = assembly.GetManifestResourceNames().Single(str => str.EndsWith("Config.xml"));
+        XDocument xdoc = XDocument.Load(this.GetType().Assembly.GetManifestResourceStream(resourceNamexml));
+        xdoc.Save(DataDirectory + "/Config.xml");
+        string resourceNamexsd = assembly.GetManifestResourceNames().Single(str => str.EndsWith("Config.xsd"));
+        XDocument xsddoc = XDocument.Load(this.GetType().Assembly.GetManifestResourceStream(resourceNamexsd));
+        xsddoc.Save(DataDirectory + "/Config.xsd");
+        this.Config = Configuration.Read(ProtectorPlugin.ConfigFilePath);
+            }
 
       // Warn about possible unwanted configuration settings
       if (this.Config.ManuallyProtectableTiles[TileID.Sand] || this.Config.AutoProtectedTiles[TileID.Sand])
@@ -235,8 +234,8 @@ namespace Terraria.Plugins.CoderCow.Protector {
       this.GetDataHookHandler.ChestUnlock += this.Net_ChestUnlock;
       this.GetDataHookHandler.HitSwitch += this.Net_HitSwitch;
       this.GetDataHookHandler.DoorUse += this.Net_DoorUse;
-      this.GetDataHookHandler.QuickStackNearby += this.Net_QuickStackNearby;
-
+      this.GetDataHookHandler.QuickStackNearby += this.Net_QuickStackNearby;     
+      
       // this handler should ideally be registered AFTER all other plugins
       this.GetDataHookHandlerLate = new GetDataHookHandler(this, true, -100);
       this.GetDataHookHandlerLate.TileEdit += this.Net_TileEditLate;
@@ -362,7 +361,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
     private void Net_QuickStackNearby(object sender, PlayerSlotEventArgs e) {
       if (this.isDisposed || !this.hooksEnabled || e.Handled)
         return;
-
+      
       e.Handled = this.UserInteractionHandler.HandleQuickStackNearby(e.Player, e.SlotIndex);
     }
 

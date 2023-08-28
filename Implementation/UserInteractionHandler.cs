@@ -17,6 +17,9 @@ using Terraria.Plugins.Common;
 using Terraria.Plugins.Common.Collections;
 using TShockAPI;
 using TShockAPI.DB;
+using IL.Terraria.DataStructures;
+using IL.Terraria.UI;
+using Terraria.UI;
 
 namespace Terraria.Plugins.CoderCow.Protector {
   public class UserInteractionHandler: UserInteractionHandlerBase, IDisposable {
@@ -746,7 +749,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
 
           playerLocal.SendTileSquareCentered(location);
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = true };
-        }
+        } 
 
         return new CommandInteractionResult { IsHandled = false, IsInteractionCompleted = false };
       };
@@ -2424,6 +2427,11 @@ namespace Terraria.Plugins.CoderCow.Protector {
 
     private bool TryCreateAutoProtection(TSPlayer forPlayer, DPoint location) {
       try {
+        if (forPlayer.HasPermission(ProtectorPlugin.RestrictProtections_Permission)
+         && (!forPlayer.HasBuildPermission(location.X, location.Y, false)
+         || TShock.Regions.InAreaRegion(location.X, location.Y).Count() == 0))
+          return false;
+        
         this.ProtectionManager.CreateProtection(forPlayer, location, false);
         
         if (this.Config.NotifyAutoProtections)
@@ -3032,10 +3040,10 @@ namespace Terraria.Plugins.CoderCow.Protector {
     public virtual bool HandleQuickStackNearby(TSPlayer player, int playerSlotIndex) {
       if (this.IsDisposed)
         return false;
-
+      
       Item item = player.TPlayer.inventory[playerSlotIndex];
-      // TODO: fix this
-      //this.PutItemInNearbyChest(player, item, player.TPlayer.Center);
+      this.PutItemInNearbyChest(player, item, player.TPlayer.Center);
+      
 
       player.SendData(PacketTypes.PlayerSlot, string.Empty, player.Index, playerSlotIndex, item.prefix);
       return true;
@@ -3051,7 +3059,7 @@ namespace Terraria.Plugins.CoderCow.Protector {
         Chest tChest = Main.chest[i];
         if (tChest == null || !Main.tile[tChest.x, tChest.y].active())
           continue;
-
+        
         bool isPlayerInChest = Main.player.Any((p) => p.chest == i);
         if (!isPlayerInChest) {
           IChest chest = new ChestAdapter(i, tChest);
@@ -3115,7 +3123,9 @@ namespace Terraria.Plugins.CoderCow.Protector {
                   remainingStack = itemToStore.stack;
 
                 itemToStore.stack = itemToStore.stack - remainingStack;
-                //chestItem.StackSize = chestItem.StackSize + remainingStack;
+                Main.chest[chest.Index].item[i].stack = Main.chest[chest.Index].item[i].stack + remainingStack;
+                chestItem = ItemData.FromItem(Main.chest[chest.Index].item[i]);
+
                 if (isBankChest)
                   this.ServerMetadataHandler.EnqueueUpdateBankChestItem(protection.BankChestKey, i, chestItem);
 
@@ -3182,7 +3192,13 @@ namespace Terraria.Plugins.CoderCow.Protector {
 
         return false;
       }
-
+      if(player.HasPermission(ProtectorPlugin.RestrictProtections_Permission)
+         && (!player.HasBuildPermission(tileLocation.X,tileLocation.Y, false)
+         || TShock.Regions.InAreaRegion(tileLocation.X,tileLocation.Y).Count() == 0))
+      {
+        player.SendErrorMessage("You cannot place protections here.");
+        return false;
+      }
       try {
         this.ProtectionManager.CreateProtection(player, tileLocation);
         player.SendSuccessMessage("This object is now protected.");

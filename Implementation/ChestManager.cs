@@ -510,8 +510,61 @@ namespace Terraria.Plugins.CoderCow.Protector {
 
     public void HandleGameSecondUpdate() {
       this.RefillTimers.HandleGameUpdate();
+      this.UpdateUnregionedProtections();
     }
+    private void UpdateUnregionedProtections()
+        {
+            lock (this.WorldMetadata.Protections)
+            {
+                foreach (KeyValuePair<DPoint, ProtectionEntry> kvp in this.WorldMetadata.Protections)
+                {
+                    UserAccount user = TShock.UserAccounts.GetUserAccountByID(kvp.Value.Owner);
+                    TSPlayer player = TSPlayer.FindByNameOrID(user.Name).FirstOrDefault();
+                    if (player == null)
+                        return;
 
+                    if (player.HasPermission(ProtectorPlugin.RestrictProtections_Permission))
+                    {
+                        List<Region> regions = TShock.Regions.InAreaRegion(kvp.Value.TileLocation.X, kvp.Value.TileLocation.Y).ToList();
+
+                        if (regions.Count == 0)
+                        {
+                            if (kvp.Value.BankChestKey != BankChestDataKey.Invalid)
+                            {
+                                IChest chest = this.ChestFromLocation(kvp.Value.TileLocation);
+                                if (chest != null)
+                                    for (int i = 0; i < Chest.maxItems; i++)
+                                        chest.Items[i] = ItemData.None;
+                            }
+
+                            lock (this.WorldMetadata.Protections)
+                            {
+                                this.WorldMetadata.Protections.Remove(kvp.Value.TileLocation);
+                                return;
+                            }
+                        }
+                        bool canAccessProtection = player.HasBuildPermission(kvp.Value.TileLocation.X,kvp.Value.TileLocation.Y,false);
+                        if(!canAccessProtection)
+                        {
+                            if (kvp.Value.BankChestKey != BankChestDataKey.Invalid)
+                            {
+                                IChest chest = this.ChestFromLocation(kvp.Value.TileLocation);
+                                if (chest != null)
+                                    for (int i = 0; i < Chest.maxItems; i++)
+                                        chest.Items[i] = ItemData.None;
+                            }
+
+                            lock (this.WorldMetadata.Protections)
+                            {
+                                this.WorldMetadata.Protections.Remove(kvp.Value.TileLocation);
+                                return;
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
     private bool RefillChestTimer_Callback(TimerBase timer) {
       RefillChestMetadata refillChest = (RefillChestMetadata)timer.Data;
       lock (this.WorldMetadata.Protections) {

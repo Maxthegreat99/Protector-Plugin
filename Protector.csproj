@@ -209,16 +209,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SlowCheetah" Version="2.5.10.7" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="TShock" Version="5.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin Common Lib 4.2.0">
-      <HintPath>..\PluginCommonLibrary\obj\x64\Release\net6.0\Plugin Common Lib 4.2.0.dll</HintPath>
+      <HintPath>..\PluginCommonLibrary\bin\x64\Release\net6.0\Plugin Common Lib 4.2.0.dll</HintPath>
     </Reference>
     <Reference Include="Wolfje.Plugins.SEconomy">
-      <HintPath>..\SEconomy\SEconomyPlugin\obj\x64\Release\net6.0-windows\Wolfje.Plugins.SEconomy.dll</HintPath>
+      <HintPath>..\SEconomy\SEconomyPlugin\bin\x64\Release\net6.0-windows\Wolfje.Plugins.SEconomy.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup />
